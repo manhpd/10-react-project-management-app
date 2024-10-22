@@ -1,8 +1,9 @@
 import { useRef } from "react";
 import Input from "./Input";
 import Modal from "./Modal";
+import { IProject } from "../model/project.model";
 
-export default function NewProject({ onCancel, saveProject }: { onCancel: () => void, saveProject: (project: { title: string, description: string, dueDate: string }) => void }) {
+export default function NewProject({ onCancel, saveProject }: { onCancel: () => void, saveProject: (project: IProject) => void }) {
     const title = useRef<HTMLInputElement>(null);
     const description = useRef<HTMLTextAreaElement>(null);
     const dueDate = useRef<HTMLInputElement>(null);
@@ -16,9 +17,11 @@ export default function NewProject({ onCancel, saveProject }: { onCancel: () => 
         }
 
         saveProject({
+            id: Math.random().toString(),
             title: title.current?.value,
             description: description.current?.value,
-            dueDate: dueDate.current?.value
+            dueDate: dueDate.current?.value,
+            tasks: []
         });
     };
 
@@ -44,7 +47,7 @@ export default function NewProject({ onCancel, saveProject }: { onCancel: () => 
                 </div>
 
             </div>
-            <Modal ref={modalRef} onClose={handleClose} message="Please enter all fields!"/>
+            <Modal ref={modalRef}  message="Please enter all fields!"/>
         </>
 
     )

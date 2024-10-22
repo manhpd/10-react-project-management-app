@@ -4,4 +4,6 @@ export interface IProject {
     title: string;
     description: string;
     dueDate: string;
+
+    tasks: string[];
 }

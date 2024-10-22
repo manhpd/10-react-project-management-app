@@ -33,14 +33,8 @@ function App() {
     )
   }
 
-  const handelSave = (project: { title: string; description: string; dueDate: string; }) => {
+  const handelSave = (newProject: IProject) => {
     setProjectsState(prevState => {
-      const newProject: IProject = {
-        title: project.title,
-        description: project.description,
-        dueDate: project.dueDate,
-        id: Math.random().toString()
-      }
       return {
         ...prevState,
         selectedProjectId: undefined,
@@ -60,6 +54,27 @@ function App() {
     });
   }
 
+  const handelDeleteProject = (id: string) => {
+    setProjectsState(prevState => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        projects: prevState.projects.filter(project => project.id !== id)
+      }
+    });
+  }
+
+  const handeSaveNewTask = (task: string) => {
+    setProjectsState(prevState => {
+      const project = prevState.projects.find(project => project.id === prevState.selectedProjectId);
+      project.tasks.push(task);
+      return {
+        ...prevState,
+        projects: [...prevState.projects]
+      }
+    });
+  }
+
   let content: ReactNode;
   console.log(projectsState.selectedProjectId);
   if (projectsState.selectedProjectId === null) {
@@ -68,7 +83,7 @@ function App() {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
   } else {
     const project = projectsState.projects.find(project => project.id === projectsState.selectedProjectId);
-    content = <SelectedProject project={project} />;
+    content = <SelectedProject project={project} deleteProject={() => handelDeleteProject(project.id)} saveNewTask={handeSaveNewTask}/>;
   }
 
  
